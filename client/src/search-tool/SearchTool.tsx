@@ -1,8 +1,9 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import TextField from '@material-ui/core/TextField';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Calendar, Contact, Dropbox, Slack, Tweet } from './types';
 
@@ -58,9 +59,11 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
                         {
                             results.map((result: any, idx: number) => {
                                 return (
-                                    <ListItem button key={idx}>
-                                        <ListItemText primary={result.title} />
-                                    </ListItem>
+                                    <div>
+                                        <ListItem button key={idx}>
+                                            <ListItemText primary={result.title} />
+                                        </ListItem>
+                                    </div>
                                 );
                             })
                         }
@@ -71,6 +74,9 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
     };
 
     selectTitle = (result: Calendar | Contact | Slack | Dropbox | Tweet) => {
+        if (result.hasOwnProperty("title")) {
+            return (result as Calendar).title;
+        } else if (result.hasOwnProperty("name"))
         console.log(typeof(result));
     }
 
@@ -86,7 +92,7 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
                 onChange={event => this.handleOnInputChange(event.target.value)}
             />
         </label>
-        { this.renderSearchResults() || <div>No matched results found!</div> }
+        { this.renderSearchResults() || <div>No matching results found!</div> }
       </div>;
     }
   }

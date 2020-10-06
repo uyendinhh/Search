@@ -3,7 +3,8 @@ export interface Calendar {
     "title": string,
     "invitees": string,
     "matching_terms": string[],
-    "date": "string",
+    "date": string,
+    "type": string,
 }
 
 export interface Contact {
@@ -14,6 +15,7 @@ export interface Contact {
     "phones": string[],
     "matching_terms": string[],
     "last_contact": string,
+    "type": string,
 } 
 
 export interface Dropbox {
@@ -23,6 +25,7 @@ export interface Dropbox {
     "shared_with": string[],
     "matching_terms": string[],
     "created": string,
+    "type": string,
 }
 
 export interface Slack {
@@ -32,6 +35,7 @@ export interface Slack {
     "message": string,
     "timestamp": string,
     "matching_terms": string[],
+    "type": string,
 }
 
 export interface Tweet {
@@ -39,4 +43,5 @@ export interface Tweet {
     "message": string,
     "timestamp": string,
     "matching_terms": string[],
+    "type": string,
 }

@@ -1,18 +1,16 @@
-import { promisify } from 'util';
 import fs, { readFileSync } from 'fs';
-const readFile = promisify(fs.readFile)
 
 const filterDataByMatchingTerm = (data, key, term) => {
-    const result = data[key].filter(
-        res => res['matching_terms'].includes(term));
-    return result
+    return data[key].filter(
+        res => res['matching_terms'].includes(term)
+    ).map(res => ({...res, 'type': key }));
 }
 
 export async function search(searchTerms) {
     var results = [];
     const fileNames = fs.readdirSync('data');
 
-    const data = await Promise.all(fileNames.map(name => {
+    await Promise.all(fileNames.map(name => {
         const file = readFileSync('data/' + name);
         if (!file) {
             return {}

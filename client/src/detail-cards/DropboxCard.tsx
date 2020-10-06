@@ -14,11 +14,7 @@ export const DropboxCard = (props: CardProps) => {
     const created = moment(dropbox.created).format("MMMM Do YYYY");
     return (
         <Card>
-            <CardHeader
-                avatar={<PersonIcon />}
-                title={title}
-                subheader={created}
-            />
+            <CardHeader avatar={<PersonIcon />} title={title} subheader={created} />
             <CardContent>
                 <h4>Shared with:</h4>
                 {sharedWith.map((share, idx) => (

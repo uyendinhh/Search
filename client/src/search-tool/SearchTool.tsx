@@ -9,6 +9,7 @@ import { ContactCard } from "../detail-cards/ContactCard";
 import { DropboxCard } from "../detail-cards/DropboxCard";
 import { SlackCard } from "../detail-cards/SlackCard";
 import { TweetCard } from "../detail-cards/TweetCard";
+import { SearchResult } from "./SearchResult";
 
 interface SearchProperty {
     query: string;
@@ -53,41 +54,6 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
         }
     };
 
-    renderSearchResults = () => {
-        const { results } = this.state;
-
-        if (Object.keys(results).length) {
-            return (
-                <div className="results-container">
-                    <List component="nav" aria-label="main mailbox folders">
-                        {results.map((result: any, idx: number) => {
-                            return (
-                                <ListItem button key={idx}>
-                                    {this.renderCard(result)}
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-                </div>
-            );
-        }
-    };
-
-    renderCard = (result: Calendar | Contact | Slack | Dropbox | Tweet) => {
-        switch (result.type) {
-            case "calendar":
-                return <CalendarCard calendar={result as Calendar} />;
-            case "contact":
-                return <ContactCard contact={result as Contact} />;
-            case "dropbox":
-                return <DropboxCard dropbox={result as Dropbox} />;
-            case "slack":
-                return <SlackCard slack={result as Slack} />;
-            case "tweet":
-                return <TweetCard tweet={result as Tweet} />;
-        }
-    };
-
     render() {
         return (
             <div>
@@ -103,9 +69,7 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
                         }
                     />
                 </label>
-                {this.renderSearchResults() || (
-                    <div>No matching results found!</div>
-                )}
+                <SearchResult results={this.state.results}></SearchResult>
             </div>
         );
     }

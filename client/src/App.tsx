@@ -5,9 +5,7 @@ import { SearchTool } from './search-tool/SearchTool';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <SearchTool/>
-      </header>
+      <SearchTool/>
     </div>
   );
 }

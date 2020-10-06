@@ -1,6 +1,10 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import { Calendar, Contact, Dropbox, Slack, Tweet } from './types';
 
 interface SearchProperty {
     query: string,
@@ -10,7 +14,7 @@ interface SearchProperty {
 }
 
 export class SearchTool extends React.Component<{}, SearchProperty> {
-    private baseUrl: string = 'http://localhost:3001';
+    private readonly baseUrl: string = 'http://localhost:3001';
 
     constructor(props: any) {
         super(props);
@@ -22,7 +26,7 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
         }
     }
 
-    fetchSearchResults(query: string) {
+    fetchSearchResults = (query: string) => {
         // Search for result with the given input
         axios.get(`${this.baseUrl}/search`, {
             params: { query }
@@ -50,17 +54,25 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
         if (Object.keys(results).length) {
             return (
                 <div className="results-container">
-                    {
-                        results.map((result: any, idx: number) => {
-                            return (
-                                <div key={idx}>{result.title}</div>
-                            );
-                        })
-                    }
+                    <List component="nav" aria-label="main mailbox folders">
+                        {
+                            results.map((result: any, idx: number) => {
+                                return (
+                                    <ListItem button key={idx}>
+                                        <ListItemText primary={result.title} />
+                                    </ListItem>
+                                );
+                            })
+                        }
+                    </List>
                 </div>
             );
         }
     };
+
+    selectTitle = (result: Calendar | Contact | Slack | Dropbox | Tweet) => {
+        console.log(typeof(result));
+    }
 
     render() {
       return <div>

@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Slack } from "../search-tool/types";
-import { Card, CardHeader, CardContent } from "@material-ui/core";
+import { Card, CardHeader, CardContent, Divider } from "@material-ui/core";
 import MessageIcon from "@material-ui/icons/Message";
 
 interface CardProps {
@@ -16,12 +16,19 @@ export const SlackCard = (props: CardProps) => {
         <Card>
             <CardHeader
                 avatar={<MessageIcon />}
-                title={channel}
-                subheader={timestamp}
+                title={author}
+                subheader={`Slack channel: ${channel}`}
             />
             <CardContent>
-                <h4>Author: {timestamp}</h4>
-                <h4>Message: {message}</h4>
+                <Divider />
+                <h4>
+                    {`Message: `}
+                    <span style={{ fontWeight: "normal" }}>{message}</span>
+                </h4>
+                <h4>
+                    {`Timestamp: `}
+                    <span style={{ fontWeight: "normal" }}>{timestamp}</span>
+                </h4>
             </CardContent>
         </Card>
     );

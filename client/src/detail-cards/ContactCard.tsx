@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Contact } from "../search-tool/types";
-import { Card, CardHeader, CardContent } from "@material-ui/core";
+import { Card, CardHeader, CardContent, Divider } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 
 interface CardProps {
@@ -17,23 +17,27 @@ export const ContactCard = (props: CardProps) => {
         <Card>
             <CardHeader
                 avatar={<PersonIcon />}
-                title={company}
-                subheader={lastContact}
+                title={name}
+                subheader={`Company: ${company}`}
             />
             <CardContent>
-                <h4>Name: {name}</h4>
+                <Divider light />
                 <h4>Emails:</h4>
-                {emails.map((email, idx) => (
-                    <li key={idx}>
-                        <ul>{email}</ul>
-                    </li>
+                {emails.map((email) => (
+                    <p style={{ paddingLeft: "30px" }}>{email}</p>
                 ))}
+                <Divider light />
+
                 <h4>Phones:</h4>
-                {phones.map((phone, idx) => (
-                    <li key={idx}>
-                        <ul>{phone}</ul>
-                    </li>
+                {phones.map((phone) => (
+                    <p style={{ paddingLeft: "30px" }}>{phone}</p>
                 ))}
+                <Divider light />
+
+                <h4>
+                    {`Last contact: `}
+                    <span style={{ fontWeight: "normal" }}>{lastContact}</span>
+                </h4>
             </CardContent>
         </Card>
     );

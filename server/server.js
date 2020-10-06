@@ -1,7 +1,7 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import { search } from './search.js';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import { search } from "./search.js";
 
 // Setup
 const app = express();
@@ -10,7 +10,7 @@ const port = 3001;
 
 // CORS for client-side
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 
 // Json payload parsing
 app.use(bodyParser.json());
@@ -19,61 +19,60 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Start the server
 const server = app.listen(port);
 server
-    .on('listening', () => {
+    .on("listening", () => {
         const address = server.address(),
-            bind = typeof address === 'string' ?
+            bind =
+            typeof address === "string" ?
             `pipe ${address}` :
             `port ${address.port}`;
         console.info(`Listening on ${bind}`);
     })
-    .on('error', (error) => {
-        if (error.syscall !== 'listen') {
+    .on("error", (error) => {
+        if (error.syscall !== "listen") {
             throw error;
         }
 
         // Handle specific listen errors with friendly messages
         switch (error.code) {
-            case 'EACCES':
-                console.log.error(`${port} requires elevated privileges`);
+            case "EACCES":
+                console.error(`${port} requires elevated privileges`);
                 process.exit(1);
                 break;
-            case 'EADDRINUSE':
-                console.log.error(`${port} is already in use`);
+            case "EADDRINUSE":
+                console.error(`${port} is already in use`);
                 process.exit(1);
                 break;
             default:
                 throw error;
         }
     })
-    .on('SIGINT', () => server.close())
-    .on('close', () => {
+    .on("SIGINT", () => server.close())
+    .on("close", () => {
         // All cleanup tasks
-        const cleanupTasks = [
-            () => connection().close()
-        ];
+        const cleanupTasks = [() => connection().close()];
 
         // Run all cleanup tasks but make sure
         // they don't prevent shutdown
-        cleanupTasks.forEach(task => {
+        cleanupTasks.forEach((task) => {
             try {
-                task()
+                task();
             } catch (error) {
-                console.log.error(`Error cleaning up!`, error);
+                console.error(`Error cleaning up!`, error);
             }
         });
 
         process.exit(0);
     });
 
-app.get('/', (req, res) => {
-    res.send('App is running');
+app.get("/", (req, res) => {
+    res.send("App is running");
 });
 
-app.get('/search', (req, res) => {
+app.get("/search", (req, res) => {
     const { query } = req.query;
     if (!!query) {
-        const result = search(query.split(' '));
-        result.then(data => {
+        const result = search(query.split(" "));
+        result.then((data) => {
             res.send(data);
         });
     }

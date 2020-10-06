@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
 import { Dropbox } from "../search-tool/types";
-import { Card, CardHeader, CardContent } from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
+import { Card, CardHeader, CardContent, Divider } from "@material-ui/core";
+import DescriptionIcon from "@material-ui/icons/Description";
+import EmailIcon from "@material-ui/icons/Email";
 
 interface CardProps {
     dropbox: Dropbox;
@@ -14,15 +15,22 @@ export const DropboxCard = (props: CardProps) => {
     const created = moment(dropbox.created).format("MMMM Do YYYY");
     return (
         <Card>
-            <CardHeader avatar={<PersonIcon />} title={title} subheader={created} />
+            <CardHeader
+                avatar={<DescriptionIcon />}
+                title={`Dropbox: ${title}`}
+                subheader={`Created: ${created}`}
+            />
             <CardContent>
+                <Divider light />
                 <h4>Shared with:</h4>
-                {sharedWith.map((share, idx) => (
-                    <li key={idx}>
-                        <ul>{share}</ul>
-                    </li>
+                {sharedWith.map((share) => (
+                    <p style={{ paddingLeft: "30px" }}>{share}</p>
                 ))}
-                <h4>Path: {path}</h4>
+                <Divider light />
+                <h4>
+                    {`Path: `}
+                    <span style={{ fontWeight: "normal" }}>{path}</span>
+                </h4>
             </CardContent>
         </Card>
     );

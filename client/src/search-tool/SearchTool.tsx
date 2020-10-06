@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
 
 interface SearchProperty {
     query: string,
@@ -9,63 +10,50 @@ interface SearchProperty {
 }
 
 export class SearchTool extends React.Component<{}, SearchProperty> {
+    private baseUrl: string = 'http://localhost:3001';
+
     constructor(props: any) {
         super(props);
         this.state = {
             query: '',
-            results: [
-                {
-                    "id": "12345",
-                    "title": "Acme Proposal Meeting",
-                    "invitees": "dave, john, bob, carol",
-                    "matching_terms": [
-                      "dave",
-                      "john",
-                      "bob",
-                      "carol",
-                      "acme"
-                    ],
-                    "date": "2019-01-10 10:00:00"
-                },
-                {
-                    "id": "12346",
-                    "title": "Acme Final Delivery Meeting",
-                    "invitees": "dave, john, bob, alice",
-                    "matching_terms": [
-                        "dave",
-                        "john",
-                        "bob",
-                        "alice",
-                        "acme"
-                    ],
-                    "date": "2019-03-01 11:00:00"
-                }
-            ],
+            results: [],
             loading: false,
             message: ''
         }
     }
 
-    handleOnInputChange = (event: any) => {
-        const query = event.target.value;
+    fetchSearchResults(query: string) {
+        // Search for result with the given input
+        axios.get(`${this.baseUrl}/search`, {
+            params: { query }
+        }).then( (res) => {
+            this.setState({results: res.data});
+            console.log('response', res);
+        })
+        .catch(function (error) {
+            console.log('Error while searching for events', error);
+        });
+    }
+
+    handleOnInputChange = (query: string) => {
         if (!query ) {
-            // this.setState({ query, results: [], message: '' } );
+            this.setState({ query, results: [], message: '' } );
         } else {
-            this.setState({ query, loading: true, message: '' }, () => {
-                // this.fetchSearchResults(1, query);
-            });
+            this.fetchSearchResults(query);
         }
     };
 
     renderSearchResults = () => {
         const { results } = this.state;
+        console.log('results', results);
+        
         if (Object.keys(results).length) {
             return (
                 <div className="results-container">
                     {
-                        results.map((result: any) => {
+                        results.map((result: any, idx: number) => {
                             return (
-                                <div key={result.id}>{result.title || ''}</div>
+                                <div key={idx}>{result.title}</div>
                             );
                         })
                     }
@@ -77,17 +65,16 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
     render() {
       return <div>
         <label className="search-label">
-        <TextField 
-            fullWidth 
-            placeholder="Type to search ..." 
-            id="search-bar" 
-            label="Search" 
-            variant="outlined"
-            onChange={this.handleOnInputChange}
-        />
-            {/* <i className="fa fa-search search-icon"/> */}
+            <TextField 
+                fullWidth 
+                placeholder="Type to search ..." 
+                id="search-bar" 
+                label="Search" 
+                variant="outlined"
+                onChange={event => this.handleOnInputChange(event.target.value)}
+            />
         </label>
-        { this.renderSearchResults() }
+        { this.renderSearchResults() || <div>No matched results found!</div> }
       </div>;
     }
   }

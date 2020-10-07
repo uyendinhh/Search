@@ -36,6 +36,8 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
     handleOnInputChange = (query: string) => {
         if (!!query) {
             this.fetchSearchResults(query);
+        } else {
+            this.setState({ results: [] });
         }
     };
 
@@ -50,7 +52,9 @@ export class SearchTool extends React.Component<{}, SearchProperty> {
                     variant="outlined"
                     autoFocus
                     onChange={(event) =>
-                        this.handleOnInputChange(event.target.value)
+                        this.handleOnInputChange(
+                            event.target.value.toLocaleLowerCase()
+                        )
                     }
                 />
 

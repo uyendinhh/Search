@@ -39,6 +39,7 @@ export interface Slack {
 }
 
 export interface Tweet {
+    id: string;
     user: string;
     message: string;
     timestamp: string;
